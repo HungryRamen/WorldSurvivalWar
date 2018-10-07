@@ -21,7 +21,7 @@ public class Test : MonoBehaviour
     private Vector2 vTargetPos;
 
     // Use this for initialization
-    void Start()
+    private void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprites[0];
@@ -31,7 +31,7 @@ public class Test : MonoBehaviour
     }
 
     // Update is called once per frame
-    void Update()
+    private void Update()
     {
         MouseEvent();
         FSM();
@@ -44,10 +44,10 @@ public class Test : MonoBehaviour
             Vector2 MousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
             Vector2 WorldPos = Camera.main.ScreenToWorldPoint(MousePos);
             fLength = Vector2.Distance(this.transform.position, WorldPos);
-            if (this.transform.position.x <= WorldPos.x && !bDirection)
+            if (this.transform.position.x <= WorldPos.x && !bDirection || this.transform.position.x > WorldPos.x && bDirection)
+            {
                 Flip();
-            else if (this.transform.position.x > WorldPos.x && bDirection)
-                Flip();
+            }
             vTargetPos = WorldPos;
             eState = ESTATE.eWalk;
             spriteRenderer.sprite = sprites[1];
@@ -73,6 +73,8 @@ public class Test : MonoBehaviour
                         vTargetPos = this.transform.position;
                     }
                 }
+                break;
+            default:
                 break;
         }
     }
