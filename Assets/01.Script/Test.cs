@@ -21,7 +21,7 @@ public class Test : MonoBehaviour
     private Vector2 vTargetPos;
 
     // Use this for initialization
-    private void Start()
+    void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = sprites[0];
@@ -31,7 +31,7 @@ public class Test : MonoBehaviour
     }
 
     // Update is called once per frame
-    private void Update()
+    void Update()
     {
         MouseEvent();
         FSM();
@@ -42,7 +42,8 @@ public class Test : MonoBehaviour
         if (Input.GetMouseButton(0))
         {
             Vector2 MousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Vector2 WorldPos = Camera.main.ScreenToWorldPoint(MousePos);
+            Vector2 WorldPos = Vector2Round(Camera.main.ScreenToWorldPoint(MousePos));
+       
             fLength = Vector2.Distance(this.transform.position, WorldPos);
             if (this.transform.position.x <= WorldPos.x && !bDirection || this.transform.position.x > WorldPos.x && bDirection)
             {
@@ -74,8 +75,6 @@ public class Test : MonoBehaviour
                     }
                 }
                 break;
-            default:
-                break;
         }
     }
 
@@ -85,5 +84,10 @@ public class Test : MonoBehaviour
         Vector3 vScl = transform.localScale;
         vScl.x *= -1;
         transform.localScale = vScl;
+    }
+
+    Vector2 Vector2Round(Vector2 vPos)
+    {
+        return new Vector2(Mathf.Round(vPos.x), Mathf.Round(vPos.y));
     }
 }
