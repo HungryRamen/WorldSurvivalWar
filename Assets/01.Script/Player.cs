@@ -6,16 +6,16 @@ public class Player : Pawn
 {
     void Awake()
     {
-		base.ImgLoad("Pawn/");
-        base.ImgChange((int)base.GetState());
-        base.SetObj(Obj.EOBJ.ePawn);
-        base.SetSpeed(5.0f);
+		ImgLoad("Pawn/");
+        ImgChange((int)GetState());
+        SetObj(EOBJ.ePawn);
+        SetSpeed(5.0f);
     }
 	
 	// Update is called once per frame
 	void Update () {
         MouseEvent();
-        base.FSM();
+        FSM();
 	}
 
     void MouseEvent() //마우스 클릭 처리
@@ -23,17 +23,16 @@ public class Player : Pawn
         if (Input.GetMouseButton(0))
         { 
             Vector2 MousePos = new Vector2(Input.mousePosition.x, Input.mousePosition.y);
-            Vector2 WorldPos = base.Vector2Round(Camera.main.ScreenToWorldPoint(MousePos));
-
+            Vector2 WorldPos = Vector2Round(Camera.main.ScreenToWorldPoint(MousePos));
 
             SetLength(Vector2.Distance(this.transform.position, WorldPos));
-            if (this.transform.position.x <= WorldPos.x && base.IsDirection() || this.transform.position.x > WorldPos.x && !base.IsDirection())
+            if (this.transform.position.x <= WorldPos.x && IsDirection() || this.transform.position.x > WorldPos.x && !IsDirection())
             {
-                this.transform.localScale = base.Flip(this.transform.localScale);
+                this.transform.localScale = Flip(this.transform.localScale);
             }
-            base.SetTargetPos(WorldPos);
-            base.SetState(Pawn.ESTATE.eWalk);
-            base.ImgChange((int)base.GetState());
+            SetTargetPos(WorldPos);
+            SetState(ESTATE.eWalk);
+            ImgChange((int)GetState());
         }
     }
 }

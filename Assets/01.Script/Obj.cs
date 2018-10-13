@@ -5,7 +5,7 @@ using UnityEngine;
 public class Obj : MonoBehaviour
 {
 
-    protected enum EOBJ //오브젝트 종류
+    public enum EOBJ //오브젝트 종류 enum 부분도 마찬가지로 다른곳에 정리
     {
         ePawn,
         eItem,
@@ -13,34 +13,18 @@ public class Obj : MonoBehaviour
         eGround,
     }
 
-    private bool bDirection; //왼쪽FALSE 오른쪽 TRUE
-    private EOBJ eObj;
-    private Sprite[] sprites;
+    protected EOBJ eObj;
+    protected Sprite[] sprites;
 
+    public EOBJ GetObj() { return eObj; }
+    public void SetObj(EOBJ eobj) { eObj = eobj; }
 
-    protected bool IsDirection() { return bDirection; }
+    public void ImgLoad(string sRoute) { sprites = Resources.LoadAll<Sprite>(sRoute); }
+    public void ImgChange(int iarrcount) { this.gameObject.GetComponent<SpriteRenderer>().sprite = sprites[iarrcount]; }
 
-    protected EOBJ GetObj() { return eObj; }
-    protected void SetObj(EOBJ eobj) { eObj = eobj; }
-
-    protected void ImgLoad(string sRoute) { sprites = Resources.LoadAll<Sprite>(sRoute); }
-    protected void ImgChange(int iarrcount) { this.gameObject.GetComponent<SpriteRenderer>().sprite = sprites[iarrcount]; }
-
-    void Awake()
+    static public Vector2 Vector2Round(Vector2 vPos)   //반올림 처리
     {
-        bDirection = true;
-    }
-	
-
-    protected Vector3 Flip(Vector3 vScl) //좌우 반전 함수
-    {
-        bDirection = !bDirection;
-        vScl.x *= -1;
-        return vScl;
-    }
-
-    protected Vector2 Vector2Round(Vector2 vPos)   //반올림 처리
-    {
+        //이부분은 따로 나중에 정리하자
         return new Vector2(Mathf.Round(vPos.x), Mathf.Round(vPos.y));
     }
 

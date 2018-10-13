@@ -5,33 +5,44 @@ using UnityEngine;
 public class Pawn : Obj
 {
 
-    protected enum ESTATE //폰의 FSM 상태
+    public enum ESTATE //폰의 FSM 상태
     {
         eNormal,
         eWalk,
     }
 
-    private ESTATE eState;
-    private float fSpeed;
-    private float fLength;
-    private Vector2 vTargetPos;
+    protected bool bDirection; //왼쪽FALSE 오른쪽 TRUE
+    protected ESTATE eState;
+    protected float fSpeed;
+    protected float fLength;
+    protected Vector2 vTargetPos;
 
-    protected float GetSpeed() { return fSpeed; }
-    protected void SetSpeed(float fspeed) { fSpeed = fspeed; }
+    public bool IsDirection() { return bDirection; }
 
-    protected ESTATE GetState() { return eState; }
-    protected void SetState(ESTATE estate) { eState = estate; }
+    public float GetSpeed() { return fSpeed; }
+    public void SetSpeed(float fspeed) { fSpeed = fspeed; }
 
-    protected float GetLength() { return fLength; }
-    protected void SetLength(float flength) { fLength = flength; }
+    public ESTATE GetState() { return eState; }
+    public void SetState(ESTATE estate) { eState = estate; }
 
-    protected Vector2 GetTargetPos() { return vTargetPos; }
-    protected void SetTargetPos(Vector2 vPos) { vTargetPos = vPos; }
+    public float GetLength() { return fLength; }
+    public void SetLength(float flength) { fLength = flength; }
+
+    public Vector2 GetTargetPos() { return vTargetPos; }
+    public void SetTargetPos(Vector2 vPos) { vTargetPos = vPos; }
 
     void Awake()
     {
+        bDirection = true;
         fLength = 0.0f;
         eState = ESTATE.eNormal;
+    }
+
+    protected Vector3 Flip(Vector3 vScl) //좌우 반전 함수
+    {
+        bDirection = !bDirection;
+        vScl.x *= -1;
+        return vScl;
     }
 
     protected void FSM()
@@ -51,7 +62,7 @@ public class Pawn : Obj
                     if (fLength <= 0.0f)
                     {
                         eState = ESTATE.eNormal;
-                        base.ImgChange((int)eState);
+                        ImgChange((int)eState);
                         fLength = 0.0f;
                         vTargetPos = this.transform.position;
                     }
